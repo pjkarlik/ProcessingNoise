@@ -6,18 +6,16 @@
 
 SimplexNoise SimplexNoise;
 // Screen Vars .                               
-int width = 640;
-int height = 640;
-int width_half = width / 2;
-int height_half = height / 2;
+int width_half;
+int height_half;
 
 // Grid Vars.
-int grid = 20;
-int spacing = width / grid;
+int grid = 30;
+int spacing;
 double time = 0; 
 float camera = 0;
 float iteration = 0.085;
-float halfSize = spacing * grid / 2;
+float halfSize;
 
 // Color Vars.
 float r = 0.0;
@@ -25,13 +23,13 @@ float g = 0.0;
 float b = 0.0;
 
 // Camera Vars.
-float zoom = -200;
-float camX = width_half;
-float camY = height;
-float tempX = width_half;
-float tempY = height_half;
-float thisX = width_half;
-float thisY = height_half;
+float zoom;
+float camX;
+float camY;
+float tempX;
+float tempY;
+float thisX;
+float thisY;
 
 // Vector Vars.
 PVector[][] vectors = new PVector[grid][grid];
@@ -40,7 +38,23 @@ PVector[][] vectors = new PVector[grid][grid];
 void setup()
 {
   println("starting project");
-  size(640, 640, P3D);
+  // size(640, 640, P3D);
+  fullScreen(P3D);
+  
+  // Vars based on screen size.
+  width_half = width / 2;
+  height_half = height / 2;
+  spacing = width / grid;
+  halfSize = spacing * grid / 2;
+
+  // Camera Vars.
+  zoom = -200;
+  camX = width_half;
+  camY = height;
+  tempX = width_half;
+  tempY = height_half;
+  thisX = width_half;
+  thisY = height_half;
 
   SimplexNoise = new SimplexNoise();
   generateMesh();
