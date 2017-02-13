@@ -1,5 +1,4 @@
-// Inner class to speed upp gradient computations
-// (In Java, array access is a lot slower than member access)
+// Class to speed up gradient computations
   
 private static class Grad
   {

@@ -4,8 +4,7 @@
  * Based on example code by Stefan Gustavson (stegu@itn.liu.se).
  * Optimisations by Peter Eastman (peastman@drizzle.stanford.edu).
  * Better rank ordering method for 4D by Stefan Gustavson in 2012.
- *
- * This could be speeded up even further, but it's useful as it is.
+ * Translation into Processing by Paul J Karlik (pjkarlik@gmail.com).
  *
  * Version 2012-03-09
  *
