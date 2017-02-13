@@ -14,7 +14,7 @@ int grid = 30;
 int spacing;
 double time = 0; 
 float camera = 0;
-float iteration = 0.085;
+float iteration = 0.035;
 float halfSize;
 
 // Color Vars.
@@ -62,10 +62,11 @@ void setup()
 // Generate mesh array grid * grid = total items.
 void generateMesh()
 {
+  float timeStop = (float)time * 0.005;
   for (int j = 0; j < grid; j++) {
         for (int i = 0; i < grid; i++) {
-          float nPoint = abs((float)SimplexNoise.noise(iteration * i, iteration * j, time * 0.005));
-          float zVector = nPoint * 50;
+          float nPoint = abs((float)SimplexNoise.noise(iteration * i, iteration * j, timeStop));
+          float zVector = nPoint * 100;
           vectors[i][j] = new PVector( i*spacing, j*spacing, zVector);
         }
     }
@@ -83,16 +84,21 @@ void draw()
   // center the camera before drawing the mesh grid
   float centerValue = (spacing * grid / 2);
   translate(-centerValue, -centerValue, 0);
-
+  float timeStop = (float)time * 0.01;
   for (int j = 0; j < grid; j ++) {
     for (int i = 0; i < grid; i++) {
 
-        float zOffset = abs(vectors[i][j].z) * .8;
+        float zOffset = abs(vectors[i][j].z) * .99;
         noStroke();
         sphereDetail(8);
-        // Color shading // 
-        r = sin(zOffset * 0.1) * 255;
-        g = cos(zOffset * 0.05 + ((float)time * 0.01)) * 155;
+        
+       /*
+        *  Default shading function below.
+        *  
+        */
+        
+        r = sin(zOffset * PI / 180) * 255;
+        g = cos(zOffset * 0.05 + timeStop) * 155;
         b = 255 - r;
         
        /*
@@ -100,8 +106,8 @@ void draw()
         *  
         */
           
-        //float m = cos(vectors[i][j].z * .055);
-        //float o = sin(vectors[i][j].z * .055);
+        //float m = cos(zOffset * 15 * PI / 180);
+        //float o = sin(zOffset * 15 * PI / 180);
         //r = floor(m * 255);
         //b = floor(o * 255);
         //g = b;
