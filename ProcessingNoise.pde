@@ -5,13 +5,13 @@
  */  
 
 SimplexNoise SimplexNoise;
-// Screen Vars                                
+// Screen Vars .                               
 int width = 640;
 int height = 640;
 int width_half = width / 2;
 int height_half = height / 2;
 
-// Grid Vars
+// Grid Vars.
 int grid = 20;
 int spacing = width / grid;
 double time = 0; 
@@ -19,12 +19,12 @@ float camera = 0;
 float iteration = 0.085;
 float halfSize = spacing * grid / 2;
 
-// Color Vars
+// Color Vars.
 float r = 0.0;
 float g = 0.0;
 float b = 0.0;
 
-// Camera Vars
+// Camera Vars.
 float zoom = -200;
 float camX = width_half;
 float camY = height;
@@ -33,7 +33,7 @@ float tempY = height_half;
 float thisX = width_half;
 float thisY = height_half;
 
-// Vector Vars
+// Vector Vars.
 PVector[][] vectors = new PVector[grid][grid];
 
 // Basic Setup
@@ -45,7 +45,7 @@ void setup()
   SimplexNoise = new SimplexNoise();
   generateMesh();
 }
-
+// Generate mesh array grid * grid = total items.
 void generateMesh()
 {
   for (int j = 0; j < grid; j++) {
@@ -57,15 +57,16 @@ void generateMesh()
     }
   
 }
+// Draw loop - where the action takes place!
 void draw()
-{ 
+{ // Clear background and advance time.
   time+=1;
   background(0,0,0);
-  
+  // hit functions to pull new mesh array, set lighting and camera view.
   generateMesh();
   lighting();
   cameraView();
-  
+  // center the camera before drawing the mesh grid
   float centerValue = (spacing * grid / 2);
   translate(-centerValue, -centerValue, 0);
 
@@ -80,12 +81,18 @@ void draw()
         g = cos(zOffset * 0.05 + ((float)time * 0.01)) * 155;
         b = 255 - r;
         
+       /*
+        *  Alt shading function below - still playing for best colors.
+        *  
+        */
+          
         //float m = cos(vectors[i][j].z * .055);
         //float o = sin(vectors[i][j].z * .055);
         //r = floor(m * 255);
         //b = floor(o * 255);
         //g = b;
       
+        // Set material, push matrix - move - draw - pop matrix.
         emissive(r,g,b);
         pushMatrix();
         translate(vectors[i][j].x, vectors[i][j].y, -vectors[i][j].z - (zOffset / 2));
@@ -105,14 +112,21 @@ void lighting()
 
 void cameraView()
 {
-    // If mouse is inactive pick the center of the screen
+    // If mouse is inactive pick the last values.
     tempX = mousePressed ? mouseX : tempX;
     tempY = mousePressed ? mouseY : tempY;
+    
+    // Easing function 
     thisX = thisX - (thisX - tempX) * 0.01;
     thisY = thisY - (thisY - tempY) * 0.01;
+    
+    // Set rotation based on center screen.
     camX = (width_half - thisX) * 0.006;
     camY = (height_half - thisY)* 0.01;
+    
+    // Get out center value based on mesh grid.
     float centerValue = (spacing * grid / 2);
+    
     translate(centerValue, centerValue, -zoom);
     rotateX((-90) - camY);
     rotateZ(45 - camX);
