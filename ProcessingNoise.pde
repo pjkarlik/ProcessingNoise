@@ -10,11 +10,11 @@ int width_half;
 int height_half;
 
 // Grid Vars.
-int grid = 30;
+int grid = 20;
 int spacing;
 double time = 0; 
 float camera = 0;
-float iteration = 0.035;
+float iteration = 0.065;
 float halfSize;
 
 // Color Vars.
@@ -48,7 +48,7 @@ void setup()
   halfSize = spacing * grid / 2;
 
   // Camera Vars.
-  zoom = -200;
+  zoom = 800;
   camX = width_half;
   camY = height;
   tempX = width_half;
@@ -62,11 +62,12 @@ void setup()
 // Generate mesh array grid * grid = total items.
 void generateMesh()
 {
-  float timeStop = (float)time * 0.005;
+  float timeStop = (float)time * 0.003;
   for (int j = 0; j < grid; j++) {
         for (int i = 0; i < grid; i++) {
-          float nPoint = abs((float)SimplexNoise.noise(iteration * i, iteration * j, timeStop));
-          float zVector = nPoint * 100;
+          // timeStop added to x param to add motion - SimplexNoise.noise(x,y,z)
+          float nPoint = abs((float)SimplexNoise.noise(iteration * i + timeStop, iteration * j, timeStop));
+          float zVector = nPoint * 150;
           vectors[i][j] = new PVector( i*spacing, j*spacing, zVector);
         }
     }
@@ -75,7 +76,7 @@ void generateMesh()
 // Draw loop - where the action takes place!
 void draw()
 { // Clear background and advance time.
-  time+=1;
+  time += 1;
   background(0,0,0);
   // hit functions to pull new mesh array, set lighting and camera view.
   generateMesh();
@@ -97,9 +98,9 @@ void draw()
         *  
         */
         
-        r = sin(zOffset * PI / 180) * 255;
-        g = cos(zOffset * 0.05 + timeStop) * 155;
-        b = 255 - r;
+        //r = sin(zOffset * PI / 180) * 255;
+        //g = cos(zOffset * PI / 180) * 255;
+        //b = sin((timeStop * 0.1) * PI) * 255;
         
        /*
         *  Alt shading function below - still playing for best colors.
@@ -112,6 +113,12 @@ void draw()
         //b = floor(o * 255);
         //g = b;
       
+        float m = cos(zOffset * PI / 180);
+        float o = sin((3 * zOffset) * PI / 180);
+        r = floor(m * 255);
+        g = floor(o * 255);
+        b = cos(zOffset * PI / 180) * 155;
+        
         // Set material, push matrix - move - draw - pop matrix.
         emissive(r,g,b);
         pushMatrix();
@@ -148,8 +155,9 @@ void cameraView()
     float centerValue = (spacing * grid / 2);
     
     translate(centerValue, centerValue, -zoom);
+    float camOffset = (float)time *0.003;
     rotateX((-90) - camY);
-    rotateZ(45 - camX);
+    rotateZ(45 - camX + camOffset);
     // Make it auto Rotate
     // rotateZ(frameCount *0.005);
 }
