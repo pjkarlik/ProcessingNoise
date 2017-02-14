@@ -67,7 +67,7 @@ void generateMesh()
         for (int i = 0; i < grid; i++) {
           // timeStop added to x param to add motion - SimplexNoise.noise(x,y,z)
           float nPoint = abs((float)SimplexNoise.noise(iteration * i + timeStop, iteration * j, timeStop));
-          float zVector = nPoint * 150;
+          float zVector = nPoint * 125;
           vectors[i][j] = new PVector( i*spacing, j*spacing, zVector);
         }
     }
